@@ -23,25 +23,25 @@ def predict_survived(request):
   try:
     age = request.data.get('Age', None)
     passengerId = request.data.get('PassengerId', None)
-    # pclass = request.data.get('Pclass', None)
-    # fare = request.data.get('Fare', None)
-    # sex_female = request.data.get('Sex_female', None)
-    # embarked_C = request.data.get('Embarked_C', None)
-    # embarked_Q = request.data.get('Embarked_Q', None)
-    # embarked_S = request.data.get('Embarked_S', None)
-    # sibSp = request.data.get('SibSp', None)
+    pclass = request.data.get('Pclass', None)
+    fare = request.data.get('Fare', None)
+    sex_female = request.data.get('Sex_female', None)
+    embarked_C = request.data.get('Embarked_C', None)
+    embarked_Q = request.data.get('Embarked_Q', None)
+    embarked_S = request.data.get('Embarked_S', None)
+    sibSp = request.data.get('SibSp', None)
     fields = [age, passengerId]
     if not None in fields:
       # Datapreprocessing Convert the values to float
       age = float(age)
       passengerId = float(passengerId)
-      # pclass = float(pclass)
-      # fare = float(fare)
-      # sex_female = float(sex_female)
-      # embarked_C = float(embarked_C)
-      # embarked_Q = float(embarked_Q)
-      # embarked_S = float(embarked_S)
-      # sibSp = float(sibSp)
+      pclass = float(pclass)
+      fare = float(fare)
+      sex_female = float(sex_female)
+      embarked_C = float(embarked_C)
+      embarked_Q = float(embarked_Q)
+      embarked_S = float(embarked_S)
+      sibSp = float(sibSp)
       result = [age, passengerId]
       # Passing data to model & loading the model from disks
       model_path = 'ml_model/model.pkl'
