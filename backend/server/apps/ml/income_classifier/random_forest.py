@@ -17,23 +17,22 @@ class RandomForestClassifier:
         for column in [
             "workclass",
             "education",
-            "marital_status",
+            "marital-status",
             "occupation",
             "relationship",
             "race",
             "sex",
-            "native_country",
+            "native-country",
         ]:
             categorical_convert = self.encoders[column]
             input_data[column] =categorical_convert.transform(input_data[column])
-        
         return input_data
 
     def predict(self, input_data):
         return self.model.predict_proba(input_data)
 
     def postprocessing(self, input_data):
-        label = "<=50"
+        label = "<=50K"
         if input_data[1] > 0.5:
             label = ">50k"
         return {"probability": input_data[1], "label": label, "status": "OK"}
