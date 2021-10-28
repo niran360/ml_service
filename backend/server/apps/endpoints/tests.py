@@ -8,7 +8,7 @@ class EndpointTests(TestCase):
         client = APIClient()
         input_data = {
             "age": 37,
-            "workclass": "Private",
+            "workplace": "Private",
             "fnlwgt": 34146,
             "education": "HS-grad",
             "education-num": 9,
@@ -24,6 +24,7 @@ class EndpointTests(TestCase):
         }
         classifier_url = "/api/v1/income_classifier/predict"
         response = client.post(classifier_url, input_data, format='json')
+        print(response)
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.data["label"], "<=50K")
         self.assertTrue("request_id" in response.data)

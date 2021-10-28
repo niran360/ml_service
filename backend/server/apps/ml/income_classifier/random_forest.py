@@ -15,7 +15,7 @@ class RandomForestClassifier:
         input_data.fillna(self.values_fill_missing)
         # convert categorical values
         for column in [
-            "workclass",
+            "workplace",
             "education",
             "marital-status",
             "occupation",
@@ -25,7 +25,7 @@ class RandomForestClassifier:
             "native-country",
         ]:
             categorical_convert = self.encoders[column]
-            input_data[column] =categorical_convert.transform(input_data[column])
+            input_data[column] =categorical_convert.fit_transform(input_data[column])
         return input_data
 
     def predict(self, input_data):
@@ -43,6 +43,6 @@ class RandomForestClassifier:
             prediction = self.predict(input_data)[0]
             prediction = self.postprocessing(prediction)
         except Exception as e:
-            return {"status": "Error", "message": str(e)}
+            return {"status": "Error", "message": repr(e)}
 
         return prediction
