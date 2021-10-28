@@ -5,8 +5,9 @@ from rest_framework.response import Response
 from apps.ml.registry import MLRegistry
 from server.wsgi import registry
 from django.shortcuts import render
+from django.db import transaction
+from rest_framework.exceptions import APIException
 
-# Create your views here.
 from rest_framework import viewsets
 from rest_framework import mixins
 
@@ -72,12 +73,13 @@ class MLRequestViewSet(
 
 
 class PredictView(views.APIView):
-    def post(self,request, endpoint_name, format = None):
+    def post(self, request, endpoint_name, format=None):
 
         algorithm_status = self.request.query_params.get("status", "production")
         algorithm_version = self.request.query_params.get("version")
 
         algs= MLAlgorithm.objects.filter(parent_endpoint__name  = endpoint_name, status__status = algorithm_status, status__active = True)
+        print(algs)
         if algorithm_version is not None:
             algs= algs.filter(version = algorithm_version)
 
@@ -86,7 +88,8 @@ class PredictView(views.APIView):
                 {"status": "Error", "message": "ML algorithm is not available"},
                 status=status.HTTP_400_BAD_REQUEST,
             )
-        if len(algs) != 1:
+        if len(algs) != 1 and algorithm_status != "ab_testing":
+            print(len(algs))
             return Response(
                 {"status": "Error", "message": "ML algorithm selection is ambigous. please specify algorithm version."},
                 status=status.HTTP_400_BAD_REQUEST,
